@@ -35,3 +35,24 @@ Next, we analyze the bounding box's total count and the distribution of the boun
 |:---------------:|:---------------:|
 |<img src="docs/data_analysis_3.png" width="400"> | <img src="docs/data_analysis_4.png" width="400"> |
 <hr>
+
+### Cross validation
+
+Since the images in the same Trip IDs in Waymo open dataset have similar characteristics (number of object for each class, images taken in the daytime/at night and so on), we [split those images](./create_splits.py) in the same group. Here split the data into training, validation and test sets. More specifically, 75% for training, 15% for validation and 10% for test. Each set has its own folder containing its corresponding images split from the processed Waymo open data. 
+
+## Training
+
+### Reference experiment (Experiment 0)
+
+We perform the transfer learning using [SSD_ResNet50 model](http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz) with the [default pipeline configuration](./experiments/experiment_0/pipeline.config). The results of Loss and DetectionBox_Recall/Precision will be served as baselines. The curve in orange is Loss in training steps and blue dot is Loss in evaluation. The classification loss between training (0.1482) and evaluation (0.3724) is around 0.2242. This indicates that the trained model needs to be more generous to predict objects in unseen data. To improve the initial results, we can add more variabilities in our data to simulate different environments during training. Hence, we will add more options of data augmentation in the pipeline configuration.
+
+<img src="docs/baseline_training.png" width="1000">
+<hr>
+
+<img src="docs/baseline_eval_1.png" width="1000">
+<hr>
+
+<img src="docs/baseline_eval_2.png" width="1000">
+<hr>
+
+### Improve on the reference

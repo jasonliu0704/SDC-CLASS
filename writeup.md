@@ -56,3 +56,52 @@ We perform the transfer learning using [SSD_ResNet50 model](http://download.tens
 <hr>
 
 ### Improve on the reference
+
+#### Data Augmentation
+
+Here we try several options of data augmentation such as gray-scale image conversion, random pixel value scale, hue, saturation, brightness adjustments based on [`preprocessor.proto`](https://github.com/tensorflow/models/blob/master/research/object_detection/protos/preprocessor.proto). The experiments with strategies of augmenting data are described in the [next section](#experiment-1).
+
+| | |
+|:---------------:|:---------------:|
+|<img src="docs/data_aug_1.png" width="400"> | <img src="docs/data_aug_2.png" width="400"> |
+|<img src="docs/data_aug_3.png" width="400"> | <img src="docs/data_aug_4.png" width="400"> |
+
+#### Experiment 1
+
+The processing operations on images are added in data augmentation part in [pipeline_config](./experiments/experiment_1/pipeline.config):
+
+* Randomly convert the rgb image to the gray image
+* Randomly scale the value of all pixels between the defined range
+* Randomly distort RGB value
+* Randomly decide jpeg quality between the defined range
+
+Since the baseline config already has randomly horizontal flipping and randomly image cropping, manipulating pixel values may have better chances to improve the model. The following figures showed the difference (0.1341) of Classification Loss between training (0.1697) and evaluation (0.3038) getting closer, and the DetectionBoxes_Precision as well as Recall have improvements comparing to the baseline results.
+
+<img src="docs/improved_1_training.png" width="1000">
+<hr>
+
+<img src="docs/improved_1_eval_1.png" width="1000">
+<hr>
+
+<img src="docs/improved_1_eval_2.png" width="1000">
+<hr>
+
+#### Experiment 2
+
+The processing operations on images are added in data augmentation part in [pipeline_config](./experiments/experiment_2/pipeline.config):
+
+* Randomly convert the rgb image to the gray image
+* Randomly adjust image brightness
+* Randomly change hue value
+* Randomly change saturation with the defined range
+
+As shown in the figures below, the difference (0.1242) of Classification Loss between training (0.1366) and evaluation (0.2608) is also better than the baseline. The evaluation metrics, Precision and Recall, also got improved.
+
+<img src="docs/improved_2_training.png" width="1000">
+<hr>
+
+<img src="docs/improved_2_eval_1.png" width="1000">
+<hr>
+
+<img src="docs/improved_2_eval_2.png" width="1000">
+<hr>

@@ -105,3 +105,15 @@ As shown in the figures below, the difference (0.1242) of Classification Loss be
 
 <img src="docs/improved_2_eval_2.png" width="1000">
 <hr>
+
+### Discussion
+
+There are some other options in pipeline_config that may potentially improve the model. However, the class labels (hardly see any cyclist) and images taken in different conditions (rain, fog, night time) are not balanced. It will be nice to have more diverse sets of data for training. Moreover, some of the ground truth bounding boxes in Waymo Data are quite small, which nearly cannot be perceived by human eye for data confirmation.
+
+## Results
+
+After the trained model is exported, we perform object detection with the model on driving scenes stored in the test set.  
+The object detection results are shown in the video below:
+
+<img src="docs/object_detection.gif" width="600">
+<hr>
